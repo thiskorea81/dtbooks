@@ -17,14 +17,18 @@ export async function getPdfData(pdfDataUrl) {
 
     console.log(`Page ${i} Text:`, text);
 
-    const annotations = await page.getAnnotations();
-    const images = annotations
-      .filter(annotation => annotation.subtype === 'Link' && annotation.url)
-      .map(annotation => annotation.url);
+    // 캔버스를 사용하여 페이지를 렌더링하고 이미지를 추출합니다.
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
 
-    console.log(`Page ${i} Images:`, images);
+    await page.render({ canvasContext: context, viewport }).promise;
+    const image = canvas.toDataURL();
 
-    pdfData.push({ text, images, viewport });
+    console.log(`Page ${i} Image:`, image);
+
+    pdfData.push({ text, image, viewport });
   }
 
   return pdfData;

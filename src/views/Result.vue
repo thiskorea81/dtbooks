@@ -4,8 +4,8 @@
     <div v-for="(page, index) in pdfData" :key="index" class="pdf-page">
       <h2>페이지 {{ index + 1 }}</h2>
       <p class="pdf-text">{{ page.text }}</p>
-      <div v-for="(image, imgIndex) in page.images" :key="imgIndex" class="pdf-image">
-        <img :src="image" alt="PDF 이미지" />
+      <div class="pdf-image">
+        <img :src="page.image" alt="PDF 이미지" />
       </div>
     </div>
   </div>
